@@ -14,12 +14,12 @@ let publishedDocuments;
 async function get(path){
   const url=new URL(path,location.origin);
   if(url.pathname==='/api/document'){
-    publishedDocuments??=fetch('/documents.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('Could not load records');return r.json();});
+    publishedDocuments??=fetch('documents.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('Could not load records');return r.json();});
     const docs=await publishedDocuments,ref=url.searchParams.get('path');
     if(!Object.hasOwn(docs,ref))throw new Error('Record unavailable');
     return docs[ref];
   }
-  const file={'/api/general':'/general.json'}[url.pathname];
+  const file={'/api/general':'general.json'}[url.pathname];
   if(!file)throw new Error('Unknown data request');
   const response=await fetch(file,{cache:'no-store'});
   if(!response.ok)throw new Error('Could not load published research');
